@@ -3,15 +3,21 @@ provider "aws" {
   profile = var.aws_profile
 }
 
-resource "aws_s3_bucket" "example" {
-  bucket = "${var.owner}-tf-learning-bucket"
-
-  tags = var.tags
+module "s3_bucket" {
+  source      = "./modules/s3-bucket"
+  bucket_name = "${var.owner}-tf-learning-bucket"
+  environment = var.environment
+  tags        = var.tags
 }
 
-resource "aws_s3_bucket_versioning" "bucket_versioning" {
-  bucket = aws_s3_bucket.example.id
-  versioning_configuration {
-    status = "Enabled"
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/20"
+  enable_dns_support   = true
+  enable_dns_hostnames = true
+
+  tags = {
+    Name    = "vaultpay-vpc"
+    Project = "VaultPay"
   }
+
 }

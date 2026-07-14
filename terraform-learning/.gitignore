@@ -26,6 +26,9 @@ terraform.rc
 *.tfplan
 *.plan
 
+# Backend HCL files
+backend-*.hcl
+
 # Override files
 override.tf
 override.tf.json

@@ -8,6 +8,11 @@ variable "tags" {
   type        = map(string)
 }
 
+variable "environment" {
+  description = "Deployment environment"
+  type        = string
+}
+
 variable "aws_profile" {
   description = "Name of AWS profile"
   type        = string
