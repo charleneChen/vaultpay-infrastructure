@@ -1,19 +1,19 @@
-output "bucket_id" {
-  description = "S3 bucket id"
-  value       = module.s3_bucket.bucket_id
-}
-output "bucket_arn" {
-  description = "Bucket ARN"
-  value       = module.s3_bucket.bucket_arn
-  sensitive   = true
+output "vpc_id" {
+  description = "The ID of the created VPC"
+  value       = module.vpc.vpc_id
 }
 
-output "bucket_domain_name" {
-  description = "Bucket domain name"
-  value       = module.s3_bucket.bucket_domain_name
+output "public_subnet_ids" {
+  description = "List of IDs of public subnets"
+  value       = module.vpc.public_subnet_ids
 }
 
-output "bucket_region" {
-  description = "which region the bucket was created in"
-  value       = module.s3_bucket.bucket_region
+output "app_private_subnet_ids" {
+  description = "List of IDs of app private subnets"
+  value       = module.vpc.app_private_subnet_ids
+}
+
+output "db_private_subnet_ids" {
+  description = "List of IDs of db private subnets"
+  value       = module.vpc.db_private_subnet_ids
 }
