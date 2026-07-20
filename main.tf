@@ -150,8 +150,8 @@ resource "aws_route_table" "private-rt" {
   }
 
   route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_nat_gateway.nat-gw.id
+    cidr_block      = "0.0.0.0/0"
+    nat_gateway_id  = aws_nat_gateway.nat-gw.id
   }
 }
 
