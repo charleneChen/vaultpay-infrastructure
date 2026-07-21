@@ -1,7 +1,7 @@
 resource "aws_db_subnet_group" "vaultpay" {
   name        = "vaultpay-rds-subnet-group"
   description = "Subnets available for ${var.project_name} RDS database placement"
-  subnet_ids  = module.vpc.db_private_subnet_ids
+  subnet_ids  = var.db_private_subnet_ids
 
   tags = {
     Name    = "${var.project_name}-rds-subnet-group"
@@ -12,7 +12,7 @@ resource "aws_db_subnet_group" "vaultpay" {
 resource "aws_security_group" "rds_sg" {
   name        = "vaultpay-rds-sg"
   description = "Allow inbound traffic from the app security group and all outbound traffic"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
   tags = {
     Name    = "${var.project_name}-rds-sg"

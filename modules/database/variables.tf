@@ -3,6 +3,21 @@ variable "project_name" {
   type        = string
 }
 
+variable "vpc_id" {
+  description = "The ID of the VPC"
+  type        = string
+}
+
+variable "private_subnet_app_cidrs" {
+  description = "CIDR blocks for private app subnets"
+  type        = list(string)
+}
+
+variable "db_private_subnet_ids" {
+  description = "The private subnets IDs for the RDS subnet group"
+  type        = list(string)
+}
+
 variable "db_name" {
   description = "The name of database"
   type        = string

@@ -15,10 +15,10 @@ output "db_name" {
 
 output "db_security_group_id" {
   description = "Database security group ID"
-  value       = aws_db_instance.vaultpay.security_group_id
+  value       = aws_security_group.rds_sg.id
 }
 
 output "db_master_secret_arn" {
   description = "Database master secret ARN"
-  value       = aws_db_instance.vaultpay.master_secret_arn
+  value       = aws_db_instance.vaultpay.master_user_secret[0].secret_arn
 }

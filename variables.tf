@@ -32,6 +32,7 @@ variable "azs" {
   description = "Availability zones for the VPC"
   type        = list(string)
 }
+
 variable "public_subnet_cidrs" {
   description = "CIDR blocks for public subnets"
   type        = list(string)
