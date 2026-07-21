@@ -21,12 +21,12 @@ module "vpc" {
 }
 
 module "database" {
-  source = "./modules/database"
-  project_name = var.project_name
-  db_name = var.db_name
-  db_username = var.db_username
-  multi_az = var.multi_az
+  source                  = "./modules/database"
+  project_name            = var.project_name
+  db_name                 = var.db_name
+  db_username             = var.db_username
+  multi_az                = var.multi_az
   backup_retention_period = var.backup_retention_period
-  deletion_protection = var.deletion_protection
-  skip_final_snapshot = var.skip_final_snapshot
+  deletion_protection     = var.deletion_protection
+  skip_final_snapshot     = var.skip_final_snapshot
 }
