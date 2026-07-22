@@ -27,3 +27,8 @@ output "runtime_bucket_name" {
   description = "Name of the S3 bucket holding vaultpay runtime data"
   value       = module.s3_bucket.bucket_id
 }
+
+output "alb_dns_name" {
+  description = "Application Load Balancer DNS name"
+  value = aws_lb.app.dns_name
+}
