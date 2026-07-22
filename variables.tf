@@ -1,16 +1,6 @@
-variable "owner" {
-  description = "Name of owner"
-  type        = string
-}
-
 variable "project_name" {
   description = "Name of project"
   type        = string
-}
-
-variable "tags" {
-  description = "resource tags"
-  type        = map(string)
 }
 
 variable "environment" {
@@ -75,5 +65,15 @@ variable "deletion_protection" {
 
 variable "skip_final_snapshot" {
   description = "Whether to skip the final snapshot when the instance is destroyed"
+  type        = bool
+}
+
+variable "force_destroy" {
+  description = "Whether to force destroy the S3 bucket when it is destroyed"
+  type        = bool
+}
+
+variable "force_delete" {
+  description = "Whether to force delete the ECR registry when it is destroyed"
   type        = bool
 }

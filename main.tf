@@ -3,13 +3,6 @@ provider "aws" {
   profile = var.aws_profile
 }
 
-# module "s3_bucket" {
-#   source      = "./modules/s3-bucket"
-#   bucket_name = "${var.owner}-tf-learning-bucket"
-#   environment = var.environment
-#   tags        = var.tags
-# }
-
 module "vpc" {
   source                   = "./modules/vpc"
   project_name             = var.project_name
@@ -32,4 +25,32 @@ module "database" {
   backup_retention_period  = var.backup_retention_period
   deletion_protection      = var.deletion_protection
   skip_final_snapshot      = var.skip_final_snapshot
+}
+
+resource "aws_ecr_repository" "vaultpay" {
+  name = "vaultpay"
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+  force_delete = var.force_delete
+
+  tags = {
+    Name        = "vaultpay-ecr-registry"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
+data "aws_caller_identity" "current" {}
+
+module "s3_bucket" {
+  source        = "./modules/s3-bucket"
+  bucket_name   = "${data.aws_caller_identity.current.account_id}-vaultpay-reports"
+  force_destroy = var.force_destroy
+
+  tags = {
+    Name        = "${var.project_name}-s3-reports"
+    Project     = var.project_name
+    Environment = var.environment
+  }
 }

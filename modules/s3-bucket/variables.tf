@@ -3,9 +3,9 @@ variable "bucket_name" {
   type        = string
 }
 
-variable "environment" {
-  description = "Deployment environment (dev, test, staging, prod)"
-  type        = string
+variable "force_destroy" {
+  description = "Force destroy S3 bucket"
+  type        = bool
 }
 
 variable "tags" {
