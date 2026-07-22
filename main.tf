@@ -53,3 +53,41 @@ module "s3_bucket" {
     Environment = var.environment
   }
 }
+
+resource "aws_iam_role" "app" {
+  name = "${var.project_name}-app-role"
+
+  assume_role_policy = data.aws_iam_policy_document.instance_assume_role.json
+
+  tags = {
+    Name        = "${var.project_name}-app-role"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
+# Attach multiple AWS managed policies
+resource "aws_iam_role_policy_attachment" "managed" {
+  for_each = data.aws_iam_policy.managed_policy
+
+  role       = aws_iam_role.app.name
+  policy_arn = each.value.arn
+}
+
+# Add an inline policy
+resource "aws_iam_role_policy" "inline" {
+  name   = "${var.project_name}-app-inline-policy"
+  role   = aws_iam_role.app.id
+  policy = data.aws_iam_policy_document.inline_policy.json
+}
+
+resource "aws_iam_instance_profile" "app_role_profile" {
+  name = "${var.project_name}-app-role-profile"
+  role = aws_iam_role.app.name
+
+  tags = {
+    Name        = "${var.project_name}-app-role-profile"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
