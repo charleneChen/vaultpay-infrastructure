@@ -21,11 +21,13 @@ data "aws_iam_policy" "managed_policy" {
 
 data "aws_iam_policy_document" "inline_policy" {
   statement {
+    sid       = "ReadDatabaseSecret"
     effect    = "Allow"
     actions   = ["secretsmanager:GetSecretValue"]
     resources = [module.database.db_master_secret_arn]
   }
   statement {
+    sid       = "WriteReportsToS3"
     effect    = "Allow"
     actions   = ["s3:PutObject"]
     resources = ["${module.s3_bucket.bucket_arn}/reports/*"]
