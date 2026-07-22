@@ -6,6 +6,7 @@ variable "bucket_name" {
 variable "force_destroy" {
   description = "Force destroy S3 bucket"
   type        = bool
+  default     = false
 }
 
 variable "tags" {

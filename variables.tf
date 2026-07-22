@@ -68,12 +68,14 @@ variable "skip_final_snapshot" {
   type        = bool
 }
 
-variable "force_destroy" {
+variable "s3_force_destroy" {
   description = "Whether to force destroy the S3 bucket when it is destroyed"
   type        = bool
+  default     = false
 }
 
-variable "force_delete" {
+variable "ecr_force_delete" {
   description = "Whether to force delete the ECR registry when it is destroyed"
   type        = bool
+  default     = false
 }

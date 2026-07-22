@@ -28,25 +28,24 @@ module "database" {
 }
 
 resource "aws_ecr_repository" "vaultpay" {
-  name = "vaultpay"
+  name = var.project_name
+
   image_scanning_configuration {
     scan_on_push = true
   }
-  force_delete = var.force_delete
+  force_delete = var.ecr_force_delete
 
   tags = {
-    Name        = "vaultpay-ecr-registry"
+    Name        = "${var.project_name}-ecr-registry"
     Project     = var.project_name
     Environment = var.environment
   }
 }
 
-data "aws_caller_identity" "current" {}
-
 module "s3_bucket" {
   source        = "./modules/s3-bucket"
-  bucket_name   = "${data.aws_caller_identity.current.account_id}-vaultpay-reports"
-  force_destroy = var.force_destroy
+  bucket_name   = "${data.aws_caller_identity.current.account_id}-${var.project_name}-reports"
+  force_destroy = var.s3_force_destroy
 
   tags = {
     Name        = "${var.project_name}-s3-reports"
