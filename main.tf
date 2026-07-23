@@ -14,17 +14,17 @@ module "vpc" {
 }
 
 module "database" {
-  source                   = "./modules/database"
-  project_name             = var.project_name
-  vpc_id                   = module.vpc.vpc_id
-  private_subnet_app_cidrs = var.private_subnet_app_cidrs
-  db_private_subnet_ids    = module.vpc.db_private_subnet_ids
-  db_name                  = var.db_name
-  db_username              = var.db_username
-  multi_az                 = var.multi_az
-  backup_retention_period  = var.backup_retention_period
-  deletion_protection      = var.deletion_protection
-  skip_final_snapshot      = var.skip_final_snapshot
+  source                  = "./modules/database"
+  project_name            = var.project_name
+  vpc_id                  = module.vpc.vpc_id
+  app_security_group_id   = aws_security_group.app.id
+  db_private_subnet_ids   = module.vpc.db_private_subnet_ids
+  db_name                 = var.db_name
+  db_username             = var.db_username
+  multi_az                = var.multi_az
+  backup_retention_period = var.backup_retention_period
+  deletion_protection     = var.deletion_protection
+  skip_final_snapshot     = var.skip_final_snapshot
 }
 
 resource "aws_ecr_repository" "vaultpay" {

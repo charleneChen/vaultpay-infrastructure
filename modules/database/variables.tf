@@ -8,9 +8,9 @@ variable "vpc_id" {
   type        = string
 }
 
-variable "private_subnet_app_cidrs" {
-  description = "CIDR blocks for private app subnets"
-  type        = list(string)
+variable "app_security_group_id" {
+  description = "The ID of the app security group"
+  type        = string
 }
 
 variable "db_private_subnet_ids" {

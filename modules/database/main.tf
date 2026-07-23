@@ -27,19 +27,11 @@ resource "aws_vpc_security_group_egress_rule" "allow_all_traffic_ipv4" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "allow_app_private_a_traffic" {
-  security_group_id = aws_security_group.rds_sg.id
-  ip_protocol       = "tcp"
-  cidr_ipv4         = var.private_subnet_app_cidrs[0]
-  from_port         = 5432
-  to_port           = 5432
-}
-
-resource "aws_vpc_security_group_ingress_rule" "allow_app_private_b_traffic" {
-  security_group_id = aws_security_group.rds_sg.id
-  ip_protocol       = "tcp"
-  cidr_ipv4         = var.private_subnet_app_cidrs[1]
-  from_port         = 5432
-  to_port           = 5432
+  security_group_id            = aws_security_group.rds_sg.id
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = var.app_security_group_id
+  from_port                    = 5432
+  to_port                      = 5432
 }
 
 resource "aws_db_instance" "vaultpay" {
