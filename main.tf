@@ -142,7 +142,8 @@ resource "aws_lb_target_group" "app" {
 
   health_check {
     path                = "/health"
-    matcher             = 200
+    matcher             = "200"
+    protocol            = "HTTP"
     interval            = 30
     timeout             = 5
     healthy_threshold   = 2
