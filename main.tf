@@ -239,3 +239,40 @@ resource "aws_launch_template" "app" {
     }
   }
 }
+
+resource "aws_autoscaling_group" "app" {
+  name = "${var.project_name}-app-asg"
+
+  desired_capacity = 2
+  min_size         = 2
+  max_size         = 2
+
+  health_check_type         = "ELB"
+  health_check_grace_period = 300
+
+  launch_template {
+    id      = aws_launch_template.app.id
+    version = "$Latest"
+  }
+
+  vpc_zone_identifier = module.vpc.app_private_subnet_ids
+
+  target_group_arns = [aws_lb_target_group.app.arn]
+
+  # propagate_at_launch = true takes precedence over a launch template tag_specifications tag when both use the same tag key
+  tag {
+    key                 = "Name"
+    value               = "${var.project_name}-app-asg"
+    propagate_at_launch = false
+  }
+  tag {
+    key                 = "Project"
+    value               = var.project_name
+    propagate_at_launch = false
+  }
+  tag {
+    key                 = "Environment"
+    value               = var.environment
+    propagate_at_launch = false
+  }
+}
