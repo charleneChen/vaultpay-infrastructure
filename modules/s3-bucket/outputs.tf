@@ -1,5 +1,5 @@
 output "bucket_id" {
-  description = "S3 bucket id"
+  description = "Name of the bucket"
   value       = aws_s3_bucket.this.id
 }
 

@@ -172,3 +172,70 @@ resource "aws_lb_listener" "app" {
     Environment = var.environment
   }
 }
+
+resource "aws_security_group" "app" {
+  name        = "${var.project_name}-app-sg"
+  description = "Security group for the app"
+  vpc_id      = module.vpc.vpc_id
+
+  tags = {
+    Name        = "${var.project_name}-app-sg"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "app" {
+  security_group_id            = aws_security_group.app.id
+  from_port                    = 80
+  to_port                      = 80
+  ip_protocol                  = "tcp"
+  referenced_security_group_id = aws_security_group.alb.id
+}
+
+resource "aws_vpc_security_group_egress_rule" "app" {
+  security_group_id = aws_security_group.app.id
+  ip_protocol       = "-1"
+  cidr_ipv4         = "0.0.0.0/0"
+}
+
+resource "aws_launch_template" "app" {
+  name_prefix   = "${var.project_name}-app-"
+  image_id      = data.aws_ssm_parameter.amazon_linux_2023_arm64.value
+  instance_type = "t4g.small"
+
+  iam_instance_profile {
+    arn = aws_iam_instance_profile.app_role_profile.arn
+  }
+
+  vpc_security_group_ids = [aws_security_group.app.id]
+
+  user_data = base64encode(
+    templatefile("${path.module}/user_data.sh", {
+      aws_region           = data.aws_region.current.region
+      ecr_registry         = split("/", aws_ecr_repository.vaultpay.repository_url)[0]
+      ecr_repository_url   = aws_ecr_repository.vaultpay.repository_url
+      image_tag            = var.image_tag
+      db_master_secret_arn = module.database.db_master_secret_arn
+      db_host              = split(":", module.database.db_endpoint)[0]
+      db_name              = module.database.db_name
+      db_port              = module.database.db_port
+      artifact_bucket_name = module.s3_bucket.bucket_id
+    })
+  )
+
+  tags = {
+    Name        = "${var.project_name}-app-lt"
+    Project     = var.project_name
+    Environment = var.environment
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+    tags = {
+      Name        = "${var.project_name}-app"
+      Project     = var.project_name
+      Environment = var.environment
+    }
+  }
+}

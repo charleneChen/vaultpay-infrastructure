@@ -1,4 +1,4 @@
-output "db_endppint" {
+output "db_endpoint" {
   description = "Database endpoint"
   value       = aws_db_instance.vaultpay.endpoint
 }

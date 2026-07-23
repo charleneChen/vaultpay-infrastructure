@@ -33,3 +33,9 @@ data "aws_iam_policy_document" "inline_policy" {
     resources = ["${module.s3_bucket.bucket_arn}/reports/*"]
   }
 }
+
+data "aws_ssm_parameter" "amazon_linux_2023_arm64" {
+  name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-arm64"
+}
+
+data "aws_region" "current" {}
